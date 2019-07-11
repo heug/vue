@@ -5,7 +5,8 @@ pipeline {
         stage('Build') {
             steps {
                 checkout scm
-                echo 'Building..'
+                echo 'Installing dependencies...'
+                stash
             }
         }
         // stage('Test') {
