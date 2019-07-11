@@ -14,6 +14,7 @@ pipeline {
                 stage('Test lint-flow-types') {
                     steps {
                         unstash 'app'
+                        sh 'ls -al'
                         echo 'run linting tests..'
                     }
                 }
@@ -22,12 +23,17 @@ pipeline {
                         echo 'run coverage tests...'
                     }
                 }
+                stage('Test end to end') {
+                    steps {
+                        echo 'run end to end tests...'
+                    }
+                }
             }
         }
-        // stage('Deploy') {
-        //     steps {
-        //         echo 'Deploying....'
-        //     }
-        // }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
     }
 }
