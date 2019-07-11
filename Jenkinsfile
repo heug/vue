@@ -9,11 +9,21 @@ pipeline {
                 stash name: 'app'
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         echo 'Testing..'
-        //     }
-        // }
+        stage('Run Tests') {
+            parallel {
+                stage('Test lint-flow-types') {
+                    steps {
+                        unstash 'app'
+                        echo 'run linting tests..'
+                    }.
+                }
+                stage('Test coverage') {
+                    steps {
+                        echo 'run coverage tests...'
+                    }
+                }
+            }
+        }
         // stage('Deploy') {
         //     steps {
         //         echo 'Deploying....'
