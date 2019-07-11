@@ -24,12 +24,19 @@ pipeline {
                 }
                 stage('Test coverage') {
                     steps {
+                        sh 'node --version'
                         echo 'run coverage tests...'
                     }
                 }
                 stage('Test end to end') {
                     steps {
-                        echo 'run end to end tests...'
+                        docker.image('postgres:9.4.1').withRun('-e "POSTGRES_USER=root" -p 5432:5432') { c ->
+                            /* Wait until mysql service is up */
+                            sh 'while ! nc -z localhost 5432; do sleep 1; done; echo "Postgres Server loaded"'
+                            /* Run some tests which require MySQL */
+                            echo 'run end to end tests...'
+                        }
+                        
                     }
                 }
             }
