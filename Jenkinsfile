@@ -15,7 +15,7 @@ pipeline {
                     steps {
                         unstash 'app'
                         echo 'run linting tests..'
-                    }.
+                    }
                 }
                 stage('Test coverage') {
                     steps {
