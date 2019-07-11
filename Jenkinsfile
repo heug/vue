@@ -6,7 +6,7 @@ pipeline {
             steps {
                 checkout scm
                 echo 'Installing dependencies...'
-                stash
+                stash name: 'app'
             }
         }
         // stage('Test') {
