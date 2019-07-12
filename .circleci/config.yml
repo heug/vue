@@ -49,6 +49,11 @@ jobs:
 
   test-e2e:
     <<: *defaults
+    docker:
+      - image: vuejs/ci
+      - image: circleci/postgres:9.4.1
+        environment:
+          POSTGRES_USER: root
     steps:
       - attach_workspace:
           at: ~/project
