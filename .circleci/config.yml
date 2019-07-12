@@ -11,7 +11,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      # reduce size of cache
       - restore_cache:
           keys:
             - v1-vue-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -55,13 +54,6 @@ jobs:
           at: ~/project
       - run: echo "run end to end tests"
 
-  test-ssr-weex:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: echo "run some ssr tests?"
-
   trigger-regression-test:
     <<: *defaults
     steps:
@@ -69,6 +61,11 @@ jobs:
           name: regression testing
           command: |
             echo "cool done"
+
+  deploy:
+    <<: *defaults
+    steps:
+      - run: echo "ship it!"
 
 workflows:
   version: 2
@@ -84,9 +81,6 @@ workflows:
       - test-e2e:
           requires:
             - install
-      - test-ssr-weex:
-          requires:
-            - install
       - trigger-regression-test:
           filters:
             branches:
@@ -97,34 +91,8 @@ workflows:
             - test-cover
             - lint-flow-types
             - test-e2e
-            - test-ssr-weex
-# yeah let's not do the cron
-  # weekly_regression_test:
-  #   triggers:
-  #     - schedule:
-  #         # At 13:00 UTC (9:00 EDT) on every Monday
-  #         cron: "0 13 * * 1"
-  #         filters:
-  #           branches:
-  #             only:
-  #               dev
-  #   jobs:
-  #     - install
-  #     - test-cover:
-  #         requires:
-  #           - install
-  #     - lint-flow-types:
-  #         requires:
-  #           - install
-  #     - test-e2e:
-  #         requires:
-  #           - install
-  #     - test-ssr-weex:
-  #         requires:
-  #           - install
-  #     - trigger-regression-test:
-  #         requires:
-  #           - test-cover
-  #           - lint-flow-types
-  #           - test-e2e
-  #           - test-ssr-weex
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
