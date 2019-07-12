@@ -4,7 +4,7 @@ defaults: &defaults
   working_directory: ~/project/vue
   docker:
     # change to some generic circleci images
-    - image: vuejs/ci
+    - image: myorg/ci
 
 jobs:
   install:
@@ -50,8 +50,8 @@ jobs:
   test-e2e:
     <<: *defaults
     docker:
-      - image: vuejs/ci
-      - image: circleci/postgres:9.4.1
+      - image: myorg/ci
+      - image: myorg/postgres:9.4.1
         environment:
           POSTGRES_USER: root
     steps:
