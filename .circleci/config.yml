@@ -3,7 +3,6 @@ version: 2
 defaults: &defaults
   working_directory: ~/project/vue
   docker:
-    # change to some generic circleci images
     - image: myorg/ci
 
 jobs:
@@ -40,7 +39,6 @@ jobs:
           at: ~/project
       - run: echo "run coverage tests"
       - run:
-        # let's leave this but simplify
          name: report coverage stats for non-PRs
          command: |
            if [[ -z $CI_PULL_REQUEST ]]; then
